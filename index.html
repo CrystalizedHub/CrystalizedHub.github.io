@@ -67,6 +67,15 @@
     box-shadow: 0 0 8px rgba(255,255,255,0.9);
   }
 
+  /* === TOUCH DEVICES: kill custom cursor entirely === */
+  @media (hover: none) and (pointer: coarse) {
+    html, body, a, button, .game-header, .tab-btn, .copy-btn,
+    .discord-btn, .copy-invite-btn {
+      cursor: auto !important;
+    }
+    .cursor-ring, .cursor-point { display: none !important; }
+  }
+
   /* Faint grid background */
   #grid-bg {
     position: fixed;
@@ -89,13 +98,13 @@
     pointer-events: none;
   }
 
-  /* Visitor counter */
+  /* Visitor counter — fixed top-right on desktop */
   .visitor-counter {
     position: fixed;
     top: 18px;
     right: 22px;
     z-index: 9999;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 8px;
     padding: 8px 16px;
@@ -105,6 +114,25 @@
     border: 1px solid var(--surface-border);
     border-radius: 50px;
     box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  }
+
+  /* Wrapper used only on mobile to keep counter in-flow */
+  .visitor-wrap {
+    display: none;
+    justify-content: center;
+    margin: 14px 0 0;
+    position: relative;
+    z-index: 3;
+  }
+
+  /* On mobile: drop the counter into the flow between tabs and header */
+  @media (max-width: 640px) {
+    .visitor-wrap { display: flex; }
+    .visitor-counter {
+      position: static;
+      top: auto; right: auto;
+      margin: 0;
+    }
   }
 
   .visitor-dot {
@@ -151,6 +179,7 @@
     gap: 14px;
     padding-top: 28px;
     padding-bottom: 8px;
+    flex-wrap: wrap;
   }
 
   .tab-btn {
@@ -257,6 +286,15 @@
     font-weight: 900;
     color: #fff;
     letter-spacing: -0.3px;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.35s ease, text-shadow 0.35s ease;
+    display: inline-block;
+    transform-origin: left center;
+  }
+
+  .stat-number.bump {
+    transform: scale(1.18);
+    color: var(--neon);
+    text-shadow: 0 0 18px rgba(0,255,136,0.85), 0 0 32px rgba(0,255,136,0.45);
   }
 
   .stat-label {
@@ -297,6 +335,7 @@
     .crystal-icon { width: 52px; height: 52px; }
     .stats-bar { gap: 12px; }
     .stat-item { padding: 8px 14px; }
+    .tab-btn { padding: 10px 20px; font-size: 0.88rem; }
   }
 
   h2 {
@@ -685,18 +724,12 @@
 </head>
 <body>
 
-<!-- Custom cursor -->
+<!-- Custom cursor (hidden on touch via CSS) -->
 <div id="cursor-ring" class="cursor-ring"></div>
 <div id="cursor-point" class="cursor-point"></div>
 
 <!-- Faint grid background -->
 <div id="grid-bg"></div>
-
-<!-- Visitor counter -->
-<div class="visitor-counter">
-  <div class="visitor-dot"></div>
-  <div class="visitor-text"><span id="visitor-count">5</span> online now</div>
-</div>
 
 <!-- Interactive dots / click FX canvas -->
 <canvas id="fx-canvas"></canvas>
@@ -704,8 +737,16 @@
 <!-- Tabs -->
 <div class="tabs">
   <button class="tab-btn active" onclick="showTab('main')">Main</button>
-  <button class="tab-btn" onclick="showTab('buy')">Buy</button>
+  <button class="tab-btn" onclick="showTab('buy')">Buy/Support</button>
   <button class="tab-btn" onclick="showTab('info')">Information</button>
+</div>
+
+<!-- Visitor counter (in-flow wrapper used on mobile, fixed on desktop) -->
+<div class="visitor-wrap">
+  <div class="visitor-counter">
+    <div class="visitor-dot"></div>
+    <div class="visitor-text"><span id="visitor-count">5</span> online now</div>
+  </div>
 </div>
 
 <!-- Hub Header -->
@@ -741,7 +782,7 @@
       </svg>
     </div>
     <div>
-      <div class="stat-number">70K</div>
+      <div class="stat-number" id="exec-stat">70,000</div>
       <div class="stat-label">Total Executions</div>
     </div>
   </div>
@@ -753,7 +794,7 @@
       </svg>
     </div>
     <div>
-      <div class="stat-number">3.2K</div>
+      <div class="stat-number" id="keys-stat">3,950</div>
       <div class="stat-label">Keys Created</div>
     </div>
   </div>
@@ -767,7 +808,7 @@
       </svg>
     </div>
     <div>
-      <div class="stat-number">2.3K</div>
+      <div class="stat-number" id="disc-stat">2,290</div>
       <div class="stat-label">Discord Members</div>
     </div>
   </div>
@@ -892,7 +933,7 @@
     </div>
   </div>
 
-  <!-- BUY TAB -->
+  <!-- BUY/SUPPORT TAB -->
   <div id="buy" class="tab-content">
     <div class="glass-card buy-wrap">
       <div class="buy-heading">Ready to dominate?</div>
@@ -929,10 +970,10 @@
         </div>
         <div class="info-text">
           <p>
-            We'll keep this short — we don't log your data. Period. No IP collection, no session tracking, no shady third-party analytics hiding in the terms. Crystalized was built by people who actually use exploits, not some corporate team looking to monetize your activity. Everything runs on bare-metal servers with a strict zero-retention policy, which means the second you disconnect, there's nothing left on our end. Your privacy isn't a selling point for us — it's just how we operate.
+            quick one on privacy, we don't log anything. no IPs, no session tracking, none of that creepy stuff buried in 90% of websites' terms pages. i made this with a couple friends who actually use scripts ourselves so the last thing we want is a database sitting around with our own users in it lol. the servers wipe everything the second you close the tab and honestly that's pretty much the whole policy.
           </p>
           <p>
-            On top of that, you're getting updates pushed out daily, not once a month when someone remembers. Every feature gets tested properly before it goes live — silent aim runs clean, ESP doesn't tank your framerate, and our detection evasion actually works because we've spent real time on it. Free users get the same stable core as paid members because we don't believe in holding basic quality behind a paywall. If you're done with bloated hubs that crash every other update, you're in the right place.
+            updates also go out basically every day, not the "we pushed one fix last month" thing some hubs pull. everything gets tested before it ships so silent aim isn't randomly locking onto walls, ESP doesn't tank your fps, and the bypass actually holds up because we put real hours into it. free users get the same working core as anyone who paid, locking basic stuff behind a paywall is kinda scummy imo. if you're sick of hubs breaking every other week you'll probably like it here.
           </p>
         </div>
       </div>
@@ -956,36 +997,47 @@
   }, 1200);
 })();
 
-/* ================= CUSTOM CURSOR ================= */
+/* ================= TOUCH DETECTION ================= */
+const IS_TOUCH = window.matchMedia('(hover: none) and (pointer: coarse)').matches
+              || ('ontouchstart' in window && navigator.maxTouchPoints > 0);
+
+/* ================= CUSTOM CURSOR (desktop only) ================= */
 const ring = document.getElementById('cursor-ring');
 const point = document.getElementById('cursor-point');
-let ringX = 0, ringY = 0, ptX = 0, ptY = 0;
 
-document.addEventListener('mousemove', function(e){
-  ptX = e.clientX; ptY = e.clientY;
-});
+if (IS_TOUCH) {
+  // Make sure they're truly gone on touch devices.
+  ring.style.display = 'none';
+  point.style.display = 'none';
+} else {
+  let ringX = 0, ringY = 0, ptX = 0, ptY = 0;
 
-function curLoop(){
-  ringX += (ptX - ringX) * 0.18;
-  ringY += (ptY - ringY) * 0.18;
-  ring.style.left = ringX + 'px';
-  ring.style.top = ringY + 'px';
-  point.style.left = ptX + 'px';
-  point.style.top = ptY + 'px';
-  requestAnimationFrame(curLoop);
+  document.addEventListener('mousemove', function(e){
+    ptX = e.clientX; ptY = e.clientY;
+  });
+
+  function curLoop(){
+    ringX += (ptX - ringX) * 0.18;
+    ringY += (ptY - ringY) * 0.18;
+    ring.style.left = ringX + 'px';
+    ring.style.top = ringY + 'px';
+    point.style.left = ptX + 'px';
+    point.style.top = ptY + 'px';
+    requestAnimationFrame(curLoop);
+  }
+  curLoop();
+
+  document.querySelectorAll('a, button, .game-header, .tab-btn, .copy-btn, .copy-invite-btn, .discord-btn').forEach(function(el){
+    el.addEventListener('mouseenter', function(){ ring.classList.add('hover'); });
+    el.addEventListener('mouseleave', function(){ ring.classList.remove('hover'); });
+  });
 }
 
-curLoop();
-
-document.querySelectorAll('a, button, .game-header, .tab-btn, .copy-btn, .copy-invite-btn, .discord-btn').forEach(function(el){
-  el.addEventListener('mouseenter', function(){ ring.classList.add('hover'); });
-  el.addEventListener('mouseleave', function(){ ring.classList.remove('hover'); });
-});
-
-/* ================= VISITOR COUNTER ================= */
+/* ================= VISITOR COUNTER (fake fluctuation + this-user bump) ================= */
 (function(){
   const el = document.getElementById('visitor-count');
-  let current = Math.floor(Math.random() * 16) + 3;
+  // Random base 3-18, +1 because YOU just joined.
+  let current = Math.floor(Math.random() * 16) + 3 + 1;
   el.textContent = current;
 
   function updateVisitors(){
@@ -1000,11 +1052,10 @@ document.querySelectorAll('a, button, .game-header, .tab-btn, .copy-btn, .copy-i
     const next = current + change;
     if(next >= 2 && next <= 30){
       current = next;
-      el.textContent = current;
     } else {
       current = Math.max(2, Math.min(30, next));
-      el.textContent = current;
     }
+    el.textContent = current;
   }
 
   function scheduleNext(){
@@ -1015,6 +1066,117 @@ document.querySelectorAll('a, button, .game-header, .tab-btn, .copy-btn, .copy-i
     }, delay);
   }
   scheduleNext();
+})();
+
+/* ================= GLOBAL STAT COUNTERS =================
+   - Executions:  persisted server-side (shared across all visitors).
+                  Increments only when someone copies the script.
+   - Keys/Discord: deterministic, time-based growth anchored to NOW
+                   so the displayed value is the same for every visitor
+                   and grows from a sensible baseline.
+================================================================= */
+(function(){
+  const NS  = 'crystalized-hub-v1';
+  const API = 'https://abacus.jasoncameron.dev';
+  const EXEC_INIT = 70000;
+
+  const execEl = document.getElementById('exec-stat');
+  const keysEl = document.getElementById('keys-stat');
+  const discEl = document.getElementById('disc-stat');
+
+  function fmt(n){ return Number(n).toLocaleString('en-US'); }
+
+  function bump(el){
+    el.classList.remove('bump');
+    void el.offsetWidth; // restart animation
+    el.classList.add('bump');
+    setTimeout(function(){ el.classList.remove('bump'); }, 700);
+  }
+
+  function setValue(el, n, animate){
+    el.textContent = fmt(n);
+    if(animate) bump(el);
+  }
+
+  /* ---------- localStorage fallback ---------- */
+  function lsGet(k, def){
+    try { const v = parseInt(localStorage.getItem('crys_' + k), 10); return isFinite(v) ? v : def; }
+    catch(e){ return def; }
+  }
+  function lsSet(k, v){
+    try { localStorage.setItem('crys_' + k, String(v)); } catch(e){}
+  }
+
+  /* ---------- EXECUTIONS (server-persisted) ---------- */
+  let executions = lsGet('executions', EXEC_INIT);
+  setValue(execEl, executions, false);
+
+  (async function loadExec(){
+    try {
+      await fetch(API + '/create/' + NS + '/executions?initializer=' + EXEC_INIT + '&enable_reset=false', { cache: 'no-store' }).catch(function(){});
+      const r = await fetch(API + '/get/' + NS + '/executions', { cache: 'no-store' });
+      const j = await r.json();
+      if(j && typeof j.value === 'number'){
+        executions = Math.max(executions, j.value);
+        lsSet('executions', executions);
+        setValue(execEl, executions, false);
+      }
+    } catch(e){ /* offline / blocked */ }
+  })();
+
+  window.__incrementExecutions = async function(){
+    executions += 1;
+    lsSet('executions', executions);
+    setValue(execEl, executions, true);
+    try {
+      const r = await fetch(API + '/hit/' + NS + '/executions', { cache: 'no-store' });
+      const j = await r.json();
+      if(j && typeof j.value === 'number' && j.value > executions){
+        executions = j.value;
+        lsSet('executions', executions);
+        setValue(execEl, executions, false);
+      }
+    } catch(e){ /* keep optimistic */ }
+  };
+
+  /* ---------- KEYS CREATED ----------
+     Base 3,950. +1 every 17 min. Anchored to TODAY so it
+     stays around 4k and grows naturally from here.
+  ------------------------------------- */
+  const KEYS_BASE    = 3950;
+  const KEYS_EPOCH   = Date.UTC(2026, 4, 26, 0, 0, 0); // 2026-05-26 00:00 UTC
+  const KEYS_STEP_MS = 17 * 60 * 1000;
+  function computeKeys(){
+    const elapsed = Date.now() - KEYS_EPOCH;
+    if(elapsed <= 0) return KEYS_BASE;
+    return KEYS_BASE + Math.floor(elapsed / KEYS_STEP_MS);
+  }
+
+  /* ---------- DISCORD MEMBERS ----------
+     Base 2,290. +2 every 13 min (averages 2 every 6-20 min as requested).
+     Same epoch as keys so it grows from current 2.3k.
+  --------------------------------------- */
+  const DISC_BASE    = 2290;
+  const DISC_EPOCH   = Date.UTC(2026, 4, 26, 0, 0, 0);
+  const DISC_STEP_MS = 13 * 60 * 1000;
+  function computeDiscord(){
+    const elapsed = Date.now() - DISC_EPOCH;
+    if(elapsed <= 0) return DISC_BASE;
+    return DISC_BASE + Math.floor(elapsed / DISC_STEP_MS) * 2;
+  }
+
+  let lastKeys = computeKeys();
+  let lastDisc = computeDiscord();
+  setValue(keysEl, lastKeys, false);
+  setValue(discEl, lastDisc, false);
+
+  function pollGrowing(){
+    const nk = computeKeys();
+    const nd = computeDiscord();
+    if(nk !== lastKeys){ lastKeys = nk; setValue(keysEl, nk, true); }
+    if(nd !== lastDisc){ lastDisc = nd; setValue(discEl, nd, true); }
+  }
+  setInterval(pollGrowing, 20000);
 })();
 
 /* ================= TABS ================= */
@@ -1037,9 +1199,12 @@ function copyScript(){
       btn.innerHTML = originalHTML;
       btn.classList.remove('copied');
     }, 2000);
+    if(typeof window.__incrementExecutions === 'function'){
+      window.__incrementExecutions();
+    }
   }
   if(navigator.clipboard && window.isSecureContext){
-    navigator.clipboard.writeText(text).then(finish);
+    navigator.clipboard.writeText(text).then(finish).catch(finish);
   } else {
     var ta = document.createElement('textarea');
     ta.value = text;
@@ -1126,10 +1291,11 @@ const dots = [];
 const DOT_COUNT = 85;
 
 for(let i=0;i<DOT_COUNT;i++){
-  let vx = (Math.random()-0.5)*1.2;
-  let vy = (Math.random()-0.5)*1.2;
-  if(Math.abs(vx)<0.25) vx = vx<0 ? -0.3 : 0.3;
-  if(Math.abs(vy)<0.25) vy = vy<0 ? -0.3 : 0.3;
+  // Slowed ~3x from original
+  let vx = (Math.random()-0.5)*0.4;
+  let vy = (Math.random()-0.5)*0.4;
+  if(Math.abs(vx)<0.08) vx = vx<0 ? -0.1 : 0.1;
+  if(Math.abs(vy)<0.08) vy = vy<0 ? -0.1 : 0.1;
   dots.push({
     x: Math.random()*W, y: Math.random()*H,
     vx: vx, vy: vy,
@@ -1223,6 +1389,7 @@ function animate(){
 animate();
 
 window.addEventListener('mousemove', function(e){ mx=e.clientX; my=e.clientY; });
+// Click bursts work on both desktop click and mobile tap
 window.addEventListener('click', function(e){ bursts.push(new Burst(e.clientX,e.clientY)); });
 </script>
 </body>
