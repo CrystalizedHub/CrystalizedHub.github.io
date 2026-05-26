@@ -4,6 +4,32 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Crystalized Hub</title>
+
+<!-- ============== FAVICON ============== -->
+<!-- Inline SVG favicon (instant, no extra request, perfect crispness at any size) -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><defs><linearGradient id='a' x1='0' y1='0' x2='1' y2='1'><stop offset='0%25' stop-color='%23b4ffda'/><stop offset='100%25' stop-color='%2300e676'/></linearGradient><linearGradient id='b' x1='1' y1='0' x2='0' y2='1'><stop offset='0%25' stop-color='%2300c853'/><stop offset='100%25' stop-color='%2300e676'/></linearGradient></defs><path d='M24 3 L40 15 L24 27 L8 15 Z' fill='url(%23a)' opacity='.95'/><path d='M24 27 L40 15 L36 39 L24 45 L12 39 L8 15 Z' fill='url(%23b)' opacity='.65'/><path d='M24 3 L24 45 M8 15 L24 27 L40 15 M12 39 L24 27 L36 39' stroke='rgba(255,255,255,.25)' stroke-width='.8' fill='none'/></svg>">
+<!-- File-based fallbacks for browsers that prefer them -->
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
+<link rel="apple-touch-icon" sizes="512x512" href="favicon-512.png">
+<link rel="shortcut icon" href="favicon.ico">
+
+<!-- ============== OPEN GRAPH / SOCIAL PREVIEW ============== -->
+<meta name="description" content="Crystalized Hub — premium free / keyless / paid Roblox scripts. Silent aim, ESP, auto farm, infinite features and daily updates.">
+<meta name="theme-color" content="#00ff88">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Crystalized Hub — Premium Roblox Scripting">
+<meta property="og:description" content="Free / keyless / paid scripts for Rivals, Booga Booga, Survive Zombie Arena and more. Silent aim, ESP, auto farm, daily updates.">
+<meta property="og:image" content="og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Crystalized Hub — Premium Roblox Scripting">
+<meta name="twitter:description" content="Free / keyless / paid scripts. Silent aim, ESP, auto farm and daily updates.">
+<meta name="twitter:image" content="og-image.png">
+
 <style>
   :root {
     --neon: #00ff88;
@@ -67,7 +93,6 @@
     box-shadow: 0 0 8px rgba(255,255,255,0.9);
   }
 
-  /* === TOUCH DEVICES: kill custom cursor entirely === */
   @media (hover: none) and (pointer: coarse) {
     html, body, a, button, .game-header, .tab-btn, .copy-btn,
     .discord-btn, .copy-invite-btn, .preview-link {
@@ -90,7 +115,6 @@
     mask-image: radial-gradient(ellipse 65% 55% at 8% 98%, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.25) 35%, transparent 52%);
   }
 
-  /* Canvas overlay */
   #fx-canvas {
     position: fixed;
     inset: 0;
@@ -133,8 +157,7 @@
   }
 
   .visitor-dot {
-    width: 8px;
-    height: 8px;
+    width: 8px; height: 8px;
     background: var(--neon);
     border-radius: 50%;
     box-shadow: 0 0 8px rgba(0,255,136,0.6);
@@ -169,7 +192,6 @@
     transform: scale(1.04);
   }
 
-  /* Content wrapper */
   .content-wrapper {
     position: relative;
     z-index: 2;
@@ -178,7 +200,6 @@
     margin: 0 auto;
   }
 
-  /* Tabs */
   .tabs {
     position: relative;
     z-index: 3;
@@ -219,7 +240,6 @@
     box-shadow: 0 8px 28px rgba(0,255,100,0.25);
   }
 
-  /* Hub header */
   .hub-header {
     position: relative;
     z-index: 3;
@@ -263,7 +283,6 @@
     margin-top: 5px;
   }
 
-  /* Stats bar */
   .stats-bar {
     position: relative;
     z-index: 3;
@@ -297,6 +316,7 @@
     transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.35s ease, text-shadow 0.35s ease;
     display: inline-block;
     transform-origin: left center;
+    font-variant-numeric: tabular-nums;
   }
 
   .stat-number.bump {
@@ -313,7 +333,6 @@
     letter-spacing: 0.8px;
   }
 
-  /* Tab content */
   .tab-content {
     display: none;
     animation: fadeIn 0.5s ease both;
@@ -326,7 +345,6 @@
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  /* Glass card */
   .glass-card {
     background: var(--surface);
     backdrop-filter: blur(24px);
@@ -362,24 +380,6 @@
     line-height: 1.5;
   }
 
-  .standout {
-    margin: 20px 0 28px;
-    font-size: 0.95rem;
-    font-weight: 800;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    color: var(--neon);
-    text-shadow: 0 0 12px rgba(0,255,136,0.35);
-    animation: textGlow 2.5s ease-in-out infinite;
-    text-align: center;
-  }
-
-  @keyframes textGlow {
-    0%, 100% { opacity: 1; text-shadow: 0 0 12px rgba(0,255,136,0.35); }
-    50% { opacity: 0.85; text-shadow: 0 0 24px rgba(0,255,136,0.55); }
-  }
-
-  /* Code block */
   .code-wrap {
     position: relative;
     margin: 14px 0 22px;
@@ -401,7 +401,6 @@
     word-break: break-all;
   }
 
-  /* Shared style for both copy buttons (main + invite) */
   .copy-btn,
   .copy-invite-btn {
     padding: 8px 16px;
@@ -443,7 +442,6 @@
 
   .section-spacer { height: 44px; }
 
-  /* Games list */
   .games-title {
     font-size: 1.05rem;
     color: var(--neon);
@@ -459,7 +457,6 @@
 
   .game-item {
     border-bottom: 1px solid rgba(0,255,136,0.1);
-    /* NOTE: removed overflow:hidden so child hover shadows don't get clipped */
   }
 
   .game-item:last-child { border-bottom: none; }
@@ -476,7 +473,6 @@
   }
 
   .game-header:hover { color: var(--neon); }
-
   .game-header-left { display: flex; align-items: center; gap: 10px; }
 
   .game-dot {
@@ -502,7 +498,6 @@
 
   .game-item.open .toggle-icon { transform: rotate(45deg); }
 
-  /* === Smooth accordion body (grid trick) === */
   .game-body {
     display: grid;
     grid-template-rows: 0fr;
@@ -515,9 +510,6 @@
     padding-right: 6px;
   }
 
-  /* The inner element used to be overflow:hidden, which clipped the hover
-     translate/shadow of the preview link at the top. We give it generous
-     top/bottom padding so the moved + glowing card stays fully visible. */
   .game-body > .game-body-inner {
     overflow: hidden;
     min-height: 0;
@@ -532,7 +524,7 @@
     padding-top: 6px;
   }
 
-  /* === Preview link (red-dominant glow) === */
+  /* === Preview link === */
   .preview-link {
     position: relative;
     display: flex;
@@ -565,7 +557,6 @@
     overflow: hidden;
   }
 
-  /* Soft animated red sheen behind everything */
   .preview-link::before {
     content: '';
     position: absolute;
@@ -638,7 +629,6 @@
     color: #fff;
   }
 
-  /* Mobile tweaks for the preview link */
   @media (max-width: 640px) {
     .preview-link {
       padding: 11px 14px;
@@ -652,7 +642,6 @@
     }
     .preview-link .yt-badge { width: 28px; height: 20px; }
     .preview-link .preview-arrow { width: 13px; height: 13px; }
-    /* On mobile, no hover translation possible — calmer active state */
     .preview-link:active {
       transform: scale(0.985);
       box-shadow:
@@ -679,7 +668,6 @@
 
   .feature-check { color: var(--neon); font-weight: 800; }
 
-  /* Live status bars */
   .live-status { margin: 0 0 6px; }
 
   .live-status-title {
@@ -763,7 +751,6 @@
     opacity: 0.8;
   }
 
-  /* Buy tab */
   .buy-wrap { text-align: center; padding: 36px 24px; }
 
   .buy-heading {
@@ -855,7 +842,6 @@
 
   .discord-btn svg { width: 24px; height: 24px; fill: currentColor; }
 
-  /* Info tab */
   .info-text {
     color: var(--text-dim);
     line-height: 1.75;
@@ -898,30 +884,24 @@
 </head>
 <body>
 
-<!-- Custom cursor (hidden on touch via CSS) -->
 <div id="cursor-ring" class="cursor-ring"></div>
 <div id="cursor-point" class="cursor-point"></div>
 
-<!-- Faint grid background -->
 <div id="grid-bg"></div>
 
-<!-- Interactive dots / click FX canvas -->
 <canvas id="fx-canvas"></canvas>
 
-<!-- DESKTOP visitor counter (fixed top-right) -->
 <div class="visitor-counter desktop">
   <div class="visitor-dot"></div>
   <div class="visitor-text"><span class="visitor-count">5</span> online now</div>
 </div>
 
-<!-- Tabs -->
 <div class="tabs">
   <button class="tab-btn active" onclick="showTab('main')">Main</button>
   <button class="tab-btn" onclick="showTab('buy')">Buy/Support</button>
   <button class="tab-btn" onclick="showTab('info')">Information</button>
 </div>
 
-<!-- MOBILE visitor counter (in-flow, between tabs and logo) -->
 <div class="visitor-mobile-wrap">
   <div class="visitor-counter mobile">
     <div class="visitor-dot"></div>
@@ -929,7 +909,6 @@
   </div>
 </div>
 
-<!-- Hub Header -->
 <div class="hub-header">
   <svg class="crystal-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
     <defs>
@@ -953,7 +932,6 @@
   </div>
 </div>
 
-<!-- Stats bar -->
 <div class="stats-bar">
   <div class="stat-item">
     <div class="stat-icon">
@@ -996,7 +974,6 @@
 
 <div class="content-wrapper">
 
-  <!-- MAIN TAB -->
   <div id="main" class="tab-content active">
     <div class="glass-card">
       <h2>Script Loader</h2>
@@ -1015,7 +992,6 @@
       </div>
 
       <div id="gamesList">
-        <!-- Rivals -->
         <div class="game-item">
           <div class="game-header" onclick="toggleGame(this)">
             <div class="game-header-left">
@@ -1047,7 +1023,6 @@
           </div>
         </div>
 
-        <!-- Booga Booga -->
         <div class="game-item">
           <div class="game-header" onclick="toggleGame(this)">
             <div class="game-header-left">
@@ -1081,7 +1056,6 @@
           </div>
         </div>
 
-        <!-- Survive Zombie Arena -->
         <div class="game-item">
           <div class="game-header" onclick="toggleGame(this)">
             <div class="game-header-left">
@@ -1112,7 +1086,6 @@
 
       <div class="section-spacer"></div>
 
-      <!-- Live status -->
       <div class="live-status">
         <div class="live-status-title">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
@@ -1147,7 +1120,6 @@
     </div>
   </div>
 
-  <!-- BUY/SUPPORT TAB -->
   <div id="buy" class="tab-content">
     <div class="glass-card buy-wrap">
       <div class="buy-heading">Ready to dominate?</div>
@@ -1171,7 +1143,6 @@
     </div>
   </div>
 
-  <!-- INFORMATION TAB -->
   <div id="info" class="tab-content">
     <div class="glass-card">
       <div class="info-badge">A message from the owner</div>
@@ -1244,7 +1215,7 @@ if (IS_TOUCH) {
   });
 }
 
-/* ================= VISITOR COUNTER (smooth count-up/down) ================= */
+/* ================= VISITOR COUNTER ================= */
 (function(){
   const els = document.querySelectorAll('.visitor-count');
   let current = Math.floor(Math.random() * 16) + 3 + 1;
@@ -1331,9 +1302,40 @@ if (IS_TOUCH) {
     setTimeout(function(){ el.classList.remove('bump'); }, 700);
   }
 
-  function setValue(el, n, animate){
-    el.textContent = fmt(n);
-    if(animate) bump(el);
+  /* ---------- Smooth count-up tween for stats ---------- */
+  const tweens = new WeakMap();
+  function tweenStat(el, from, to, animate){
+    if(from === to){
+      el.textContent = fmt(to);
+      return;
+    }
+    if(!animate){
+      el.textContent = fmt(to);
+      return;
+    }
+    // Cancel any in-flight tween for this element
+    const prev = tweens.get(el);
+    if(prev) cancelAnimationFrame(prev);
+
+    const diff = Math.abs(to - from);
+    // Faster for small increments (typical +1 hit), longer for big resync jumps
+    const duration = Math.min(1500, 380 + Math.min(diff, 200) * 6);
+    const start = performance.now();
+
+    function step(now){
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const val = Math.round(from + (to - from) * eased);
+      el.textContent = fmt(val);
+      if(t < 1){
+        tweens.set(el, requestAnimationFrame(step));
+      } else {
+        tweens.delete(el);
+        el.textContent = fmt(to);
+      }
+    }
+    tweens.set(el, requestAnimationFrame(step));
+    bump(el);
   }
 
   function lsGet(k, def){
@@ -1344,37 +1346,82 @@ if (IS_TOUCH) {
     try { localStorage.setItem('crys_' + k, String(v)); } catch(e){}
   }
 
+  /* ---------- EXECUTIONS (server-persisted + LIVE polling) ---------- */
   let executions = lsGet('executions', EXEC_INIT);
-  setValue(execEl, executions, false);
+  execEl.textContent = fmt(executions);
 
-  (async function loadExec(){
+  let pendingLocalBumps = 0;     // hits we fired locally that the server hasn't confirmed yet
+  let inflightLiveFetch = false; // prevent overlapping polls
+
+  async function fetchLiveExecutions(animateChanges){
+    if(inflightLiveFetch) return;
+    inflightLiveFetch = true;
     try {
-      await fetch(API + '/create/' + NS + '/executions?initializer=' + EXEC_INIT + '&enable_reset=false', { cache: 'no-store' }).catch(function(){});
       const r = await fetch(API + '/get/' + NS + '/executions', { cache: 'no-store' });
       const j = await r.json();
       if(j && typeof j.value === 'number'){
-        executions = Math.max(executions, j.value);
-        lsSet('executions', executions);
-        setValue(execEl, executions, false);
+        const serverVal = j.value;
+        // Only ever go UP (never appear to lose count). If our local optimistic
+        // value is higher because of unconfirmed hits, keep the higher one.
+        const newVal = Math.max(serverVal, executions);
+        if(newVal !== executions){
+          const oldVal = executions;
+          executions = newVal;
+          lsSet('executions', executions);
+          tweenStat(execEl, oldVal, newVal, animateChanges);
+        }
       }
+    } catch(e){
+      /* offline / blocked */
+    } finally {
+      inflightLiveFetch = false;
+    }
+  }
+
+  // First fetch — ensure counter exists, then load + start polling
+  (async function initExec(){
+    try {
+      await fetch(API + '/create/' + NS + '/executions?initializer=' + EXEC_INIT + '&enable_reset=false', { cache: 'no-store' }).catch(function(){});
     } catch(e){}
+    await fetchLiveExecutions(false); // first paint, no animation
+    // LIVE: poll every 4 seconds while the tab is visible
+    setInterval(function(){
+      if(document.visibilityState === 'visible'){
+        fetchLiveExecutions(true);
+      }
+    }, 4000);
   })();
 
+  // Immediate refresh when the tab becomes visible again (mobile/desktop)
+  document.addEventListener('visibilitychange', function(){
+    if(document.visibilityState === 'visible'){
+      fetchLiveExecutions(true);
+    }
+  });
+
+  // Public hook called by Copy button
   window.__incrementExecutions = async function(){
+    const oldVal = executions;
     executions += 1;
+    pendingLocalBumps += 1;
     lsSet('executions', executions);
-    setValue(execEl, executions, true);
+    tweenStat(execEl, oldVal, executions, true);
     try {
       const r = await fetch(API + '/hit/' + NS + '/executions', { cache: 'no-store' });
       const j = await r.json();
+      pendingLocalBumps = Math.max(0, pendingLocalBumps - 1);
       if(j && typeof j.value === 'number' && j.value > executions){
+        const before = executions;
         executions = j.value;
         lsSet('executions', executions);
-        setValue(execEl, executions, false);
+        tweenStat(execEl, before, executions, true);
       }
-    } catch(e){}
+    } catch(e){
+      pendingLocalBumps = Math.max(0, pendingLocalBumps - 1);
+    }
   };
 
+  /* ---------- KEYS / DISCORD (time-based) ---------- */
   const KEYS_BASE    = 3950;
   const KEYS_EPOCH   = Date.UTC(2026, 4, 26, 0, 0, 0);
   const KEYS_STEP_MS = 17 * 60 * 1000;
@@ -1395,14 +1442,14 @@ if (IS_TOUCH) {
 
   let lastKeys = computeKeys();
   let lastDisc = computeDiscord();
-  setValue(keysEl, lastKeys, false);
-  setValue(discEl, lastDisc, false);
+  keysEl.textContent = fmt(lastKeys);
+  discEl.textContent = fmt(lastDisc);
 
   function pollGrowing(){
     const nk = computeKeys();
     const nd = computeDiscord();
-    if(nk !== lastKeys){ lastKeys = nk; setValue(keysEl, nk, true); }
-    if(nd !== lastDisc){ lastDisc = nd; setValue(discEl, nd, true); }
+    if(nk !== lastKeys){ const old = lastKeys; lastKeys = nk; tweenStat(keysEl, old, nk, true); }
+    if(nd !== lastDisc){ const old = lastDisc; lastDisc = nd; tweenStat(discEl, old, nd, true); }
   }
   setInterval(pollGrowing, 20000);
 })();
@@ -1622,5 +1669,5 @@ animate();
 window.addEventListener('mousemove', function(e){ mx=e.clientX; my=e.clientY; });
 window.addEventListener('click', function(e){ bursts.push(new Burst(e.clientX,e.clientY)); });
 </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a0204b291e490019',t:'MTc3OTgzNTM1Mg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a02064e968631d29',t:'MTc3OTgzNjQwNw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
